@@ -7,9 +7,9 @@
 *% Licensed under Apache License v2.0.  See the file "LICENSE" for more
 *% information.
 *% 
-*% Modified for zebra-crisp-mac (https://github.com/jcl5m1/zebra-crisp-mac):
-*% renders 8-bit grayscale and uses the rastertozebracrisp filter so labels
-*% print without dithering. Adds the zeCrispLineWeight option.
+*% Changed for zebra-crisp-mac (https://github.com/jcl5m1/zebra-crisp-mac).
+*% This file sets 8-bit grayscale, uses the rastertozebracrisp filter and
+*% adds the zeCrispLineWeight option.
 *FormatVersion: "4.3"
 *FileVersion: "2.3"
 *LanguageVersion: English
@@ -28,7 +28,6 @@
 *Throughput: "8"
 *LandscapeOrientation: Plus90
 *TTRasterizer: Type42
-*% Driver-defined attributes...
 *cupsSNMPSupplies: "false"
 *cupsVersion: 2.3
 *cupsModelNumber: 18
@@ -7674,4 +7673,3 @@
 *Font Times-Roman: Standard "(1.05)" Standard ROM
 *Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
 *Font ZapfDingbats: Special "(001.005)" Special ROM
-*% End of ZebraCrisp.ppd
