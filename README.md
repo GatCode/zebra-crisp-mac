@@ -3,7 +3,8 @@
 **This driver makes Zebra label printers on macOS print sharp labels.** It is free and open source.
 
 Apple's Zebra driver can print fuzzy labels from Chrome, Safari, Preview and other Mac apps. This
-driver replaces the step that causes the problem. Labels print as sharp as raw ZPL.
+driver replaces the step that causes the problem. Labels print as sharp as raw ZPL. The driver
+supports ZPL and EPL2 printers.
 
 ![Before and after: the stock driver prints dotted, ragged text and barcode bars; zebra-crisp-mac prints clean edges](docs/before-after-scan.png)
 
@@ -19,7 +20,7 @@ dots make the edges rough. The stock driver has no setting to stop dithering.
 
 This driver makes macOS send the page in 8-bit grayscale. The driver then changes each pixel to
 black or white. It does not use dithering. A pixel that is darker than 25% gray prints black. Apple's
-Zebra driver code then makes the ZPL. All other printer settings operate as before.
+Zebra driver code then makes the ZPL or EPL2. All other printer settings operate as before.
 
 ## Install
 
@@ -37,14 +38,18 @@ Zebra driver code then makes the ZPL. All other printer settings operate as befo
 4. Select the default label size. The installer selects 4 x 6 in. To keep the current size of each
    printer, click **Keep Current**.
 
-The installer moves all printers that use Apple's **Zebra ZPL Label Printer** driver to this
-driver. It keeps their settings.
+The installer moves all printers that use Apple's **Zebra ZPL Label Printer** or **Zebra EPL2
+Label Printer** driver to the matching crisp driver. It keeps their settings.
 
 To add a new printer:
 
 1. Go to **System Settings > Printers & Scanners > Add Printer**.
 2. Select your Zebra printer.
-3. In **Use**, select **Zebra ZPL Label Printer Crisp**.
+3. In **Use**, select the crisp driver for the language of your printer:
+   - **Zebra ZPL Label Printer Crisp**, for example GK420d, GX420d, ZD410 and ZD420.
+   - **Zebra EPL2 Label Printer Crisp**, for example LP2844 and TLP2844.
+
+   If you select the wrong language, the job leaves the queue but the printer prints nothing.
 
 ### Shipping labels
 
@@ -77,7 +82,7 @@ output:
 sudo /Library/Printers/ZebraCrisp/uninstall.sh
 ```
 
-This script moves your printers back to Apple's Zebra ZPL driver and keeps their settings. It
+This script moves your printers back to Apple's Zebra ZPL or EPL2 driver and keeps their settings. It
 removes all installed files.
 
 ## Compatibility
@@ -92,10 +97,10 @@ Tested with:
 | Apps | Chrome |
 
 The driver is for Zebra printers that use Apple's **Zebra ZPL Label Printer** driver, for example
-GK420d, GX430t, ZP450, ZD410 and ZD420. The package also contains an Intel binary. We did not test
-these printers or Intel Macs. Send reports in
-[Issues](https://github.com/jcl5m1/zebra-crisp-mac/issues). The driver does not support Zebra EPL
-and CPCL printers.
+GK420d, GX430t, ZP450, ZD410 and ZD420, and Apple's **Zebra EPL2 Label Printer** driver, for example
+LP2844 and TLP2844. The package also contains an Intel binary. We did not test these printers or
+Intel Macs. Send reports in [Issues](https://github.com/jcl5m1/zebra-crisp-mac/issues). The driver
+does not support Zebra EPL1 and CPCL printers.
 
 > **Note:** Apple deprecated PPD printer drivers, including its own Zebra driver. They operate on
 > current macOS. A future macOS release can remove them.
@@ -108,6 +113,7 @@ and CPCL printers.
 | `/Library/Printers/ZebraCrisp/uninstall.sh` | Uninstaller. |
 | `/Library/PDF Services/Preview Zebra Output` | Item in the PDF menu of the print dialog. Shows the printer output. |
 | `/Library/Printers/PPDs/Contents/Resources/ZebraCrisp.ppd` | Printer description. Apple's Zebra ZPL PPD, changed for 8-bit grayscale, this filter and the Line Weight option. |
+| `/Library/Printers/PPDs/Contents/Resources/ZebraCrispEPL2.ppd` | Printer description. Apple's Zebra EPL2 PPD, with the same changes. |
 
 ## Build
 
@@ -129,7 +135,7 @@ To sign and notarize the package, set these variables before you run the script:
 
 ## License
 
-[Apache License 2.0](LICENSE). The PPD comes from the CUPS Zebra ZPL driver by Apple Inc. (Apache
+[Apache License 2.0](LICENSE). The PPDs come from the CUPS Zebra ZPL and EPL2 drivers by Apple Inc. (Apache
 2.0). See [NOTICE](NOTICE).
 
 Zebra is a trademark of Zebra Technologies. This project has no relation to Zebra Technologies or

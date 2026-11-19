@@ -1,9 +1,11 @@
 #!/bin/bash
-# Sets the default label size and moves Zebra ZPL printers to the crisp driver.
+# Sets the default label size and moves Zebra ZPL and EPL2 printers to the crisp drivers.
 
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 
-NEW_PPD=/Library/Printers/PPDs/Contents/Resources/ZebraCrisp.ppd
+PPD_DIR=/Library/Printers/PPDs/Contents/Resources
+ZPL_PPD=$PPD_DIR/ZebraCrisp.ppd
+EPL2_PPD=$PPD_DIR/ZebraCrispEPL2.ppd
 OPTIONS="PageSize Resolution zeMediaTracking MediaType Darkness zePrintRate zeLabelTop zePrintMode zeTearOffPosition zeErrorReprint zeCrispLineWeight"
 
 ask_label_size() {
@@ -34,12 +36,19 @@ case "$(ask_label_size)" in
 esac
 
 if [ -n "$page_size" ]; then
-  sed -i '' -E "s/^\*Default(PageSize|PageRegion|ImageableArea|PaperDimension): .*/*Default\1: $page_size/" "$NEW_PPD"
+  sed -i '' -E "s/^\*Default(PageSize|PageRegion|ImageableArea|PaperDimension): .*/*Default\1: $page_size/" \
+    "$ZPL_PPD" "$EPL2_PPD"
 fi
 
 for ppd in /etc/cups/ppd/*.ppd; do
   [ -f "$ppd" ] || continue
-  grep -qE '^\*NickName: "Zebra ZPL Label Printer( Crisp)?"' "$ppd" || continue
+  if grep -qE '^\*NickName: "Zebra ZPL Label Printer( Crisp)?"' "$ppd"; then
+    new_ppd="$ZPL_PPD"
+  elif grep -qE '^\*NickName: "Zebra EPL2 Label Printer( Crisp)?"' "$ppd"; then
+    new_ppd="$EPL2_PPD"
+  else
+    continue
+  fi
   queue="$(basename "$ppd" .ppd)"
 
   current="$(lpoptions -p "$queue" | tr ' ' '\n')"
@@ -51,7 +60,7 @@ for ppd in /etc/cups/ppd/*.ppd; do
   done
 
   echo "Moving printer $queue to the crisp driver"
-  lpadmin -p "$queue" -P "$NEW_PPD"
+  lpadmin -p "$queue" -P "$new_ppd"
   # lpadmin ignores defaults given together with -P.
   [ ${#defaults[@]} -gt 0 ] && lpadmin -p "$queue" "${defaults[@]}"
 done

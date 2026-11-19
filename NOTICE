@@ -1,7 +1,8 @@
 zebra-crisp-mac
 Copyright 2026 Johnny Lee
 
-This product includes a PPD file derived from the CUPS "Zebra ZPL Label
-Printer" driver (sample.drv), Copyright (c) 2007-2019 by Apple Inc. and
+This product includes PPD files derived from the CUPS "Zebra ZPL Label
+Printer" and "Zebra EPL2 Label Printer" drivers (sample.drv),
+Copyright (c) 2007-2025 by Apple Inc. and
 Copyright (c) 1997-2007 by Easy Software Products, licensed under the
 Apache License, Version 2.0.

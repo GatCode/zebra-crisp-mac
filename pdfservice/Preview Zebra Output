@@ -14,7 +14,7 @@ fail() {
 }
 
 is_crisp() {
-  [ -n "$1" ] && grep -q '^\*NickName: "Zebra ZPL Label Printer Crisp"' "/etc/cups/ppd/$1.ppd" 2>/dev/null
+  [ -n "$1" ] && grep -qE '^\*NickName: "Zebra (ZPL|EPL2) Label Printer Crisp"' "/etc/cups/ppd/$1.ppd" 2>/dev/null
 }
 
 crisp_queue() {

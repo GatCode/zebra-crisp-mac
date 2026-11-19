@@ -24,7 +24,7 @@ if [ -n "${DEVELOPER_ID_APPLICATION:-}" ]; then
   codesign --force --options runtime --timestamp --sign "$DEVELOPER_ID_APPLICATION" "$FILTER"
 fi
 
-install -m 644 ppd/ZebraCrisp.ppd "$ROOT/Library/Printers/PPDs/Contents/Resources/"
+install -m 644 ppd/ZebraCrisp.ppd ppd/ZebraCrispEPL2.ppd "$ROOT/Library/Printers/PPDs/Contents/Resources/"
 install -m 755 scripts/uninstall.sh "$ROOT/Library/Printers/ZebraCrisp/"
 install -m 755 "pdfservice/Preview Zebra Output" "$ROOT/Library/PDF Services/"
 install -m 755 scripts/postinstall "$BUILD/scripts/"
